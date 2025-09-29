@@ -1,59 +1,53 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package cinemagenta.view;
 
-import cinemagenta.util.ConexionBD;
+import cinemagenta.model.Pelicula;
+import java.util.List;
 import java.util.Scanner;
 
-/**
- *
- * @author Lenovo
- */
 public class MenuPrincipal {
-    
-    private static void mostrarMenu() {
-        int opcion = -1;
-        while (opcion != 0) {
-            System.out.println("\n--- MENÚ ---");
-            System.out.println("1. Agregar Película");
-            System.out.println("2. Listar Películas");
-            System.out.println("3. Buscar Película por ID");
-            System.out.println("4. Actualizar Película");
-            System.out.println("5. Eliminar Película");
-            System.out.println("0. Salir");
-            System.out.print("Seleccione una opción: ");
-            
-            try {
-                opcion = Integer.parseInt(scanner.nextLine());
-                switch (opcion) {
-                    case 1:
-                        agregarPelicula();
-                        break;
-                    case 2:
-                        listarPeliculas();
-                        break;
-                    case 3:
-                        buscarPelicula();
-                        break;
-                    case 4:
-                        actualizarPelicula();
-                        break;
-                    case 5:
-                        eliminarPelicula();
-                        break;
-                    case 0:
-                        System.out.println("Saliendo del programa...");
-                        ConexionBD.closeConnection();
-                        break;
-                    default:
-                        System.out.println("Opción no válida. Intente de nuevo.");
-                }
-            } catch (NumberFormatException e) {
-                System.out.println("Entrada inválida. Por favor, ingrese un número.");
+    private final Scanner scanner = new Scanner(System.in);
+
+    public int mostrarMenuYObtenerOpcion() {
+        System.out.println("\n--- MENÚ DE CINE MAGENTA ---");
+        System.out.println("1. Agregar Película");
+        System.out.println("2. Listar Películas");
+        // ...
+        System.out.println("0. Salir");
+        System.out.print("Seleccione una opción: ");
+        try {
+            return Integer.parseInt(scanner.nextLine());
+        } catch (NumberFormatException e) {
+            return -1; // Opción inválida
+        }
+    }
+
+    public Pelicula solicitarDatosPelicula() {
+        System.out.println("\n--- AGREGAR PELÍCULA ---");
+        System.out.print("Título: ");
+        String titulo = scanner.nextLine();
+        System.out.print("Director: ");
+        String director = scanner.nextLine();
+        System.out.print("Año: ");
+        int anio = Integer.parseInt(scanner.nextLine());
+        System.out.print("Duración: ");
+        int duracion = Integer.parseInt(scanner.nextLine());
+        System.out.print("Género: ");
+        String genero = scanner.nextLine();
+        return new Pelicula(titulo, director, anio, duracion, genero);
+    }
+
+    public void mostrarListaPeliculas(List<Pelicula> peliculas) {
+        System.out.println("\n--- LISTADO DE PELÍCULAS ---");
+        if (peliculas.isEmpty()) {
+            System.out.println("No hay películas registradas.");
+        } else {
+            for (Pelicula p : peliculas) {
+                System.out.printf("ID: %d | Título: %s | Director: %s%n", p.getId(), p.getTitulo(), p.getDirector());
             }
         }
     }
-    
+
+    public void mostrarMensaje(String mensaje) {
+        System.out.println(mensaje);
+    }
 }
